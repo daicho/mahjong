@@ -35,19 +35,45 @@ curl_close($ch);
 
 if ($event_type == "message") {
     $message_type = $event->message->type;
-
+	
     if ($message_type == "text") {
     	$message_text = $event->message->text;
     	
-    	$csv = file_get_contents(urlencode("https://raw.githubusercontent.com/daicho/mahjong/master/三人麻雀/成績/いっしー.csv"));
-    	//$csv = file_get_contents("http://sekiei.jp/mysql/unko.php");
+    	$fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode($message_text) . ".csv";
+    	$myfname = "record/" . $message_text . ".csv";
+    	
+    	file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
+    	
+		$csv = new SplFileObject($myfname);
+		$csv->setFlags(SplFileObject::READ_CSV);
+		
+		foreach ($csv as $row) {
+		    if (!is_null($row))
+		    	$data[] = $row;
+		}
+		
+		$send_text  = "【" . $data[1][0]  . "】" . $data[1][1]  . "\n";
+		$send_text .= "【" . $data[2][0]  . "】" . $data[2][1]  . "\n";
+		$send_text .= "【" . $data[3][0]  . "】" . $data[3][1]  . "\n";
+		$send_text .= "【" . $data[4][0]  . "】" . $data[4][1]  . "\n";
+		$send_text .= "【" . $data[5][0]  . "】" . $data[5][1]  . "\n";
+		$send_text .= "【" . $data[6][0]  . "】" . $data[6][1]  . " / " . $data[6][2]  . "\n";
+		$send_text .= "【" . $data[7][0]  . "】" . $data[7][1]  . " / " . $data[7][2]  . "\n";
+		$send_text .= "【" . $data[8][0]  . "】" . $data[8][1]  . " / " . $data[8][2]  . "\n";
+		$send_text .= "【" . $data[9][0]  . "】" . $data[9][1]  . " / " . $data[9][2]  . "\n";
+		$send_text .= "【" . $data[11][0] . "】" . $data[11][2] . "\n";
+		$send_text .= "【" . $data[12][0] . "】" . $data[12][2] . "\n";
+		$send_text .= "【" . $data[13][0] . "】" . $data[13][2] . "\n";
+		$send_text .= "【" . $data[14][0] . "】" . $data[14][2] . "\n";
+		$send_text .= "【" . $data[15][0] . "】" . $data[15][1] . "\n";
+		$send_text .= "【" . $data[16][0] . "】" . $data[16][1];
     	
 		$post_data = [
 			"to" => $source_id,
 			"messages" => [
 				[
 					"type" => "text",
-				    "text" => $csv
+				    "text" => $send_text
 				]
 			]
 		];
