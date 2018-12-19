@@ -75,6 +75,7 @@ if ($event_type == "message") {
         }
 
         $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode($message_text) . ".csv";
+        $graph_url = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("グラフ") . "/" . urlencode($message_text) . ".png";
         $myfname = "record/" . $message_text . ".csv";
 
         if (file_get_contents($fname)) {
@@ -113,6 +114,11 @@ if ($event_type == "message") {
                     [
                         "type" => "text",
                         "text" => $send_text
+                    ],
+                	[
+                        "type" => "image",
+                        "originalContentUrl" => $graph_url,
+                        "previewImageUrl" => $graph_url
                     ]
                 ]
             ];
