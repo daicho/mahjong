@@ -65,7 +65,7 @@ if ($event_type == "message") {
         for ($i = 0; $i < count($rank_str); $i++) {
         	// ランキングのいずれかに一致したら
             if ($message_text == $rank_str[$i]) {
-                $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis") . substr(microtime(), 2, 6);
+                $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
                 $myfname = "record/ランキング.csv";
 
                 if (file_get_contents($fname)) {
@@ -99,8 +99,8 @@ if ($event_type == "message") {
         }
 
 		// 成績
-        $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode($message_text) . ".csv?" . date("YmdHis") . substr(microtime(), 2, 6);
-        $graph_url = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("グラフ") . "/" . urlencode($message_text) . ".png?" . date("YmdHis") . substr(microtime(), 2, 6);
+        $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode($message_text) . ".csv?" . date("YmdHis");
+        $graph_url = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("グラフ") . "/" . urlencode($message_text) . ".png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
 
 		// 名前が存在したら
