@@ -2,7 +2,7 @@
 define("ACCESS_TOKEN", "p92VGjm5eJxJdzbz/cwIu3ErYj0pTf50tFV/ESKg2mLCHi0fHPvuPSaQ0pKXHspeB9tO+CK/7VPcjJpbPLZ61tZzAe6uq4HLBDmHY4+3YVAKI/BQcsuRbt5OISbA3AzUZV+gUZ7uOpADST8FR2L9HwdB04t89/1O/w1cDnyilFU=");
 define("USER_ID", "U370e9c2081a4b305e756946b5f6313a5");
 
-$rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "副露率"];
+$rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "リーチ率", "副露率"];
 
 // APIから送信されてきたJSONを取得
 $line_json = file_get_contents("php://input");
@@ -132,8 +132,9 @@ if ($event_type == "message") {
             $send_text .= "【" . $data[12][0] . "】" . $data[12][1] . " / " . $data[12][2] . "\n";
             $send_text .= "【" . $data[13][0] . "】" . $data[13][1] . " / " . $data[13][2] . "\n";
             $send_text .= "【" . $data[14][0] . "】" . $data[14][1] . " / " . $data[14][2] . "\n";
-            $send_text .= "【" . $data[15][0] . "】" . $data[15][1] . "\n";
-            $send_text .= "【" . $data[16][0] . "】" . $data[16][1];
+            $send_text .= "【" . $data[15][0] . "】" . $data[15][1] . " / " . $data[15][2] . "\n";
+            $send_text .= "【" . $data[16][0] . "】" . $data[16][1] . "\n";
+            $send_text .= "【" . $data[17][0] . "】" . $data[17][1];
 
             $post_data = [
                 "replyToken" => $replytoken,
