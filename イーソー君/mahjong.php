@@ -43,20 +43,33 @@ if ($event_type == "message") {
     if ($message_type == "text") {
         $message_text = $event->message->text;
 
-        $send_text = "";
-
+		// 使い方
         if ($message_text == "使い方") {
-            $send_text .= "(名前)";
+        	// 対応コマンドの一覧を送信
+            $send_text = "(名前)";
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
+
+            $post_data = [
+                "replyToken" => $replytoken,
+                "messages" => [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ]
+            ];
         }
 
+		// ランキング
         for ($i = 0; $i < count($rank_str); $i++) {
+        	// ランキングのいずれかに一致したら
             if ($message_text == $rank_str[$i]) {
                 $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv";
                 $myfname = "record/ランキング.csv";
 
                 if (file_get_contents($fname)) {
+                	// CSVを読み込み
                     file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
 
                     $csv = new SplFileObject($myfname);
@@ -67,18 +80,32 @@ if ($event_type == "message") {
                             $data[] = $row;
                     }
 
-                    $send_text .= $data[0][$i * 2 + 1];
+					// ランキングを送信
+                    $send_text = $data[0][$i * 2 + 1];
                     for ($j = 1; $j < count($data); $j++)
                         $send_text .= "\n" . "【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
+
+		            $post_data = [
+		                "replyToken" => $replytoken,
+		                "messages" => [
+		                    [
+		                        "type" => "text",
+		                        "text" => $send_text
+		                    ]
+		                ]
+		            ];
                 }
             }
         }
 
+		// 成績
         $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode($message_text) . ".csv";
         $graph_url = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("グラフ") . "/" . urlencode($message_text) . ".png";
         $myfname = "record/" . $message_text . ".csv";
 
-        if (file_get_contents($fname)) {
+		// 名前が存在したら
+        if ($message_text != "ランキング" && file_get_contents($fname)) {
+        	// CSVを読み込み
             file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
 
             $csv = new SplFileObject($myfname);
@@ -89,7 +116,8 @@ if ($event_type == "message") {
                     $data[] = $row;
             }
 
-            $send_text .= $data[0][1] . "\n";
+			// 成績を送信
+            $send_text = $data[0][1] . "\n";
             $send_text .= "【" . $data[1][0]  . "】" . $data[1][1]  . "\n";
             $send_text .= "【" . $data[2][0]  . "】" . $data[2][1]  . "\n";
             $send_text .= "【" . $data[3][0]  . "】" . $data[3][1]  . "\n";
@@ -99,15 +127,14 @@ if ($event_type == "message") {
             $send_text .= "【" . $data[7][0]  . "】" . $data[7][1]  . " / " . $data[7][2]  . "\n";
             $send_text .= "【" . $data[8][0]  . "】" . $data[8][1]  . " / " . $data[8][2]  . "\n";
             $send_text .= "【" . $data[9][0]  . "】" . $data[9][1]  . " / " . $data[9][2]  . "\n";
-            $send_text .= "【" . $data[11][0] . "】" . $data[11][2] . "\n";
-            $send_text .= "【" . $data[12][0] . "】" . $data[12][2] . "\n";
-            $send_text .= "【" . $data[13][0] . "】" . $data[13][2] . "\n";
-            $send_text .= "【" . $data[14][0] . "】" . $data[14][2] . "\n";
+            $send_text .= "【" . $data[10][0] . "】" . $data[10][1] . " / " . $data[10][2] . "\n";
+            $send_text .= "【" . $data[11][0] . "】" . $data[11][1] . " / " . $data[11][2] . "\n";
+            $send_text .= "【" . $data[12][0] . "】" . $data[12][1] . " / " . $data[12][2] . "\n";
+            $send_text .= "【" . $data[13][0] . "】" . $data[13][1] . " / " . $data[13][2] . "\n";
+            $send_text .= "【" . $data[14][0] . "】" . $data[14][1] . " / " . $data[14][2] . "\n";
             $send_text .= "【" . $data[15][0] . "】" . $data[15][1] . "\n";
             $send_text .= "【" . $data[16][0] . "】" . $data[16][1];
-        }
 
-        if ($send_text != "") {
             $post_data = [
                 "replyToken" => $replytoken,
                 "messages" => [
@@ -122,7 +149,9 @@ if ($event_type == "message") {
                     ]
                 ]
             ];
+        }
 
+        if (!is_null($post_data)) {
             // curlを使用してメッセージを返信する
             $ch = curl_init("https://api.line.me/v2/bot/message/reply");
             curl_setopt($ch, CURLOPT_POST, true);
