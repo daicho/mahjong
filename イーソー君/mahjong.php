@@ -4,6 +4,44 @@ define("USER_ID", "U370e9c2081a4b305e756946b5f6313a5");
 
 $rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "リーチ率", "副露率"];
 
+$unsei = [
+    [
+        "str" => "役満級",
+        "pckid" => 2,
+        "stkid" => 172
+    ],
+    [
+        "str" => "倍満級",
+        "pckid" => 2,
+        "stkid" => 164
+    ],
+    [
+        "str" => "満貫級",
+        "pckid" => 2,
+        "stkid" => 171
+    ],
+    [
+        "str" => "リーチのみ級",
+        "pckid" => 2,
+        "stkid" => 175
+    ],
+    [
+        "str" => "ノーテン級",
+        "pckid" => 2,
+        "stkid" => 525
+    ],
+    [
+        "str" => "ダブロン振り込み級",
+        "pckid" => 2,
+        "stkid" => 174
+    ],
+    [
+        "str" => "ふっとび級",
+        "pckid" => 2,
+        "stkid" => 173
+    ]
+];
+
 // APIから送信されてきたJSONを取得
 $line_json = file_get_contents("php://input");
 $line_obj = json_decode($line_json);
@@ -42,6 +80,26 @@ if ($event_type == "message") {
 
     if ($message_type == "text") {
         $message_text = $event->message->text;
+
+        //// 運勢占って ////
+        if (preg_match("/(運勢|占|うらな)/", $message_text)) {
+            $unsei_rand = mt_rand(0, count($unsei) - 1);
+
+            $post_data = [
+                "replyToken" => $replytoken,
+                "messages" => [
+	                [
+	                    "type" => "text",
+	                    "text" => "あなたの運勢は「" . $unsei[$unsei_rand]["str"] . "」です"
+	                ],
+	                [
+	                    "type" => "sticker",
+	                    "packageId" => $unsei[$unsei_rand]["pckid"],
+	                    "stickerId" => $unsei[$unsei_rand]["stkid"]
+	                ]
+	            ]
+            ];
+        }
 
 		// 使い方
         if ($message_text == "使い方") {
