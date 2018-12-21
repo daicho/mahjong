@@ -2,7 +2,7 @@
 define("ACCESS_TOKEN", "p92VGjm5eJxJdzbz/cwIu3ErYj0pTf50tFV/ESKg2mLCHi0fHPvuPSaQ0pKXHspeB9tO+CK/7VPcjJpbPLZ61tZzAe6uq4HLBDmHY4+3YVAKI/BQcsuRbt5OISbA3AzUZV+gUZ7uOpADST8FR2L9HwdB04t89/1O/w1cDnyilFU=");
 define("USER_ID", "U370e9c2081a4b305e756946b5f6313a5");
 
-$rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "リーチ率", "副露率"];
+$rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "リーチ率", "副露率", "リーチ成功率", "副露成功率"];
 
 $unsei = [
     [
@@ -85,19 +85,16 @@ if ($event_type == "message") {
         if (preg_match("/(運勢|占|うらな)/", $message_text)) {
             $unsei_rand = mt_rand(0, count($unsei) - 1);
 
-            $post_data = [
-                "replyToken" => $replytoken,
-                "messages" => [
-	                [
-	                    "type" => "text",
-	                    "text" => "あなたの運勢は「" . $unsei[$unsei_rand]["str"] . "」です"
-	                ],
-	                [
-	                    "type" => "sticker",
-	                    "packageId" => $unsei[$unsei_rand]["pckid"],
-	                    "stickerId" => $unsei[$unsei_rand]["stkid"]
-	                ]
-	            ]
+            $messages = [
+                [
+                    "type" => "text",
+                    "text" => "あなたの運勢は「" . $unsei[$unsei_rand]["str"] . "」です"
+                ],
+                [
+                    "type" => "sticker",
+                    "packageId" => $unsei[$unsei_rand]["pckid"],
+                    "stickerId" => $unsei[$unsei_rand]["stkid"]
+                ]
             ];
         }
 
@@ -105,16 +102,16 @@ if ($event_type == "message") {
         if ($message_text == "使い方") {
         	// 対応コマンドの一覧を送信
             $send_text = "(名前)";
+            $send_text .= "\n" . "占って";
+            $send_text .= "\n" . "ランキング";
+
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
 
-            $post_data = [
-                "replyToken" => $replytoken,
-                "messages" => [
-                    [
-                        "type" => "text",
-                        "text" => $send_text
-                    ]
+            $messages = [
+                [
+                    "type" => "text",
+                    "text" => $send_text
                 ]
             ];
         }
@@ -122,7 +119,7 @@ if ($event_type == "message") {
 		// ランキング
         for ($i = 0; $i < count($rank_str); $i++) {
         	// ランキングのいずれかに一致したら
-            if ($message_text == $rank_str[$i]) {
+            if ($message_text == $rank_str[$i] || $message_text == "ランキング") {
                 $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
                 $myfname = "record/ランキング.csv";
 
@@ -143,14 +140,9 @@ if ($event_type == "message") {
                     for ($j = 1; $j < count($data); $j++)
                         $send_text .= "\n" . "【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
 
-		            $post_data = [
-		                "replyToken" => $replytoken,
-		                "messages" => [
-		                    [
-		                        "type" => "text",
-		                        "text" => $send_text
-		                    ]
-		                ]
+		            $messages[] = [
+                        "type" => "text",
+                        "text" => $send_text
 		            ];
                 }
             }
@@ -194,21 +186,24 @@ if ($event_type == "message") {
             $send_text .= "【" . $data[16][0] . "】" . $data[16][1] . "\n";
             $send_text .= "【" . $data[17][0] . "】" . $data[17][1];
 
-            $post_data = [
-                "replyToken" => $replytoken,
-                "messages" => [
-                    [
-                        "type" => "text",
-                        "text" => $send_text
-                    ],
-                	[
-                        "type" => "image",
-                        "originalContentUrl" => $graph_url,
-                        "previewImageUrl" => $graph_url
-                    ]
+            $messages = [
+        		[
+                    "type" => "text",
+                    "text" => $send_text
+                ],
+            	[
+                    "type" => "image",
+                    "originalContentUrl" => $graph_url,
+                    "previewImageUrl" => $graph_url
                 ]
             ];
         }
+
+		// 送信データ
+        $post_data = [
+            "replyToken" => $replytoken,
+            "messages" => $messages
+        ];
 
         if (!is_null($post_data)) {
             // curlを使用してメッセージを返信する
