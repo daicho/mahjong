@@ -81,7 +81,24 @@ if ($event_type == "message") {
     if ($message_type == "text") {
         $message_text = $event->message->text;
 
-        //// 運勢占って ////
+        // 使い方
+        if ($message_text == "使い方") {
+            // 対応コマンドの一覧を送信
+            $send_text = "(名前)";
+            $send_text .= "\n" . "占って";
+
+            for ($i = 0; $i < count($rank_str); $i++)
+                $send_text .= "\n" . $rank_str[$i];
+
+            $messages = [
+                [
+                    "type" => "text",
+                    "text" => $send_text
+                ]
+            ];
+        }
+
+        // 占って
         if (preg_match("/(運勢|占|うらな)/", $message_text)) {
             $unsei_rand = mt_rand(0, count($unsei) - 1);
 
@@ -98,19 +115,15 @@ if ($event_type == "message") {
             ];
         }
 
-        // 使い方
-        if ($message_text == "使い方") {
-            // 対応コマンドの一覧を送信
-            $send_text = "(名前)";
-            $send_text .= "\n" . "占って";
-
-            for ($i = 0; $i < count($rank_str); $i++)
-                $send_text .= "\n" . $rank_str[$i];
+        // 配牌
+        if (preg_match("/(配牌|はいぱい)/", $message_text)) {
+        	$haipai_url = "https://lolipop-dp26251191.ssl-lolipop.jp/line/haipai.php?" . date("YmdHis");
 
             $messages = [
                 [
-                    "type" => "text",
-                    "text" => $send_text
+                    "type" => "image",
+                    "originalContentUrl" => $haipai_url,
+                    "previewImageUrl" => $haipai_url
                 ]
             ];
         }
