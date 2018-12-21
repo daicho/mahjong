@@ -117,7 +117,17 @@ if ($event_type == "message") {
 
         // 配牌
         if (preg_match("/(配牌|はいぱい)/", $message_text)) {
-        	$haipai_url = "https://lolipop-dp26251191.ssl-lolipop.jp/line/haipai.php?" . date("YmdHis");
+            for ($i = 1; $i <= 108; $i++)
+                $hai[] = $i;
+
+            shuffle($hai);
+            $haipai = array_slice($hai, 0, 14);
+            sort($haipai);
+
+        	$haipai_url = "https://lolipop-dp26251191.ssl-lolipop.jp/line/haipai.php?haipai=";
+
+            for ($i = 0; $i < 14; $i++)
+                $haipai_url .= sprintf("%03d", $haipai[$i]);
 
             $messages = [
                 [
