@@ -2,7 +2,7 @@
 define("ACCESS_TOKEN", "p92VGjm5eJxJdzbz/cwIu3ErYj0pTf50tFV/ESKg2mLCHi0fHPvuPSaQ0pKXHspeB9tO+CK/7VPcjJpbPLZ61tZzAe6uq4HLBDmHY4+3YVAKI/BQcsuRbt5OISbA3AzUZV+gUZ7uOpADST8FR2L9HwdB04t89/1O/w1cDnyilFU=");
 define("USER_ID", "U370e9c2081a4b305e756946b5f6313a5");
 
-$rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "リーチ率", "副露率", "リーチ成功率", "副露成功率"];
+$rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "リーチ率", "副露率", "リーチ成功率", "副露成功率", "親アガリ率"];
 
 $unsei = [
     [
