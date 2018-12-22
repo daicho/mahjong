@@ -208,12 +208,12 @@ if ($event_type == "message") {
             $send_text .= "【" . $data[12][0] . "】" . $data[12][1] . " / " . $data[12][2] . "\n";
             $send_text .= "【" . $data[13][0] . "】" . $data[13][1] . " / " . $data[13][2] . "\n";
             $send_text .= "【" . $data[14][0] . "】" . $data[14][1] . " / " . $data[14][2] . "\n";
-            $send_text .= "【" . $data[14][0] . "】" . $data[14][1] . " / " . $data[14][2] . "\n";
             $send_text .= "【" . $data[15][0] . "】" . $data[15][1] . " / " . $data[15][2] . "\n";
             $send_text .= "【" . $data[16][0] . "】" . $data[16][1] . " / " . $data[16][2] . "\n";
             $send_text .= "【" . $data[17][0] . "】" . $data[17][1] . " / " . $data[17][2] . "\n";
             $send_text .= "【" . $data[18][0] . "】" . $data[18][1] . "\n";
-            $send_text .= "【" . $data[19][0] . "】" . $data[19][1];
+            $send_text .= "【" . $data[19][0] . "】" . $data[19][1] . "\n";
+            $send_text .= "【" . $data[21][0] . "】" . $data[21][1] . " / " . $data[21][2];
 
             $messages = [
                 [
