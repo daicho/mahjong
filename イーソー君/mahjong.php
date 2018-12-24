@@ -175,8 +175,10 @@ if ($event_type == "message") {
         }
 
         // 成績
-        $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode($message_text) . ".csv?" . date("YmdHis");
-        $graph_url = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("グラフ") . "/" . urlencode($message_text) . ".png?" . date("YmdHis");
+        $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/";
+        $fname = $record . urlencode($message_text) . ".csv?" . date("YmdHis");
+        $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
+        $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
 
         // 名前が存在したら
@@ -222,8 +224,13 @@ if ($event_type == "message") {
                 ],
                 [
                     "type" => "image",
-                    "originalContentUrl" => $graph_url,
-                    "previewImageUrl" => $graph_url
+                    "originalContentUrl" => $graph_score,
+                    "previewImageUrl" => $graph_score
+                ],
+                [
+                    "type" => "image",
+                    "originalContentUrl" => $graph_kyoku,
+                    "previewImageUrl" => $graph_kyoku
                 ]
             ];
         }
