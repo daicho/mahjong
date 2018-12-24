@@ -2,7 +2,23 @@
 define("ACCESS_TOKEN", "p92VGjm5eJxJdzbz/cwIu3ErYj0pTf50tFV/ESKg2mLCHi0fHPvuPSaQ0pKXHspeB9tO+CK/7VPcjJpbPLZ61tZzAe6uq4HLBDmHY4+3YVAKI/BQcsuRbt5OISbA3AzUZV+gUZ7uOpADST8FR2L9HwdB04t89/1O/w1cDnyilFU=");
 define("USER_ID", "U370e9c2081a4b305e756946b5f6313a5");
 
-$rank_str = ["通算スコア", "平均スコア", "平均順位", "トップ率", "ふっとび率", "アガリ率", "放銃率", "平均アガリ点", "平均放銃点", "リーチ率", "副露率", "リーチ成功率", "副露成功率", "親アガリ率"];
+$rank_str = [
+    "通算スコア",
+    "平均スコア",
+    "平均順位",
+    "トップ率",
+    "アガリ率",
+    "放銃率",
+    "平均アガリ点",
+    "平均放銃点",
+    "ふっとび率",
+    "ふっとばし率",
+    "リーチ率",
+    "副露率",
+    "リーチ成功率",
+    "副露成功率",
+    "親アガリ率"
+];
 
 $unsei = [
     [
@@ -86,6 +102,7 @@ if ($event_type == "message") {
             // 対応コマンドの一覧を送信
             $send_text = "(名前)";
             $send_text .= "\n" . "占って";
+            $send_text .= "\n" . "配牌";
 
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
@@ -124,7 +141,7 @@ if ($event_type == "message") {
             $haipai = array_slice($hai, 0, 14);
             sort($haipai);
 
-        	$haipai_url = "https://lolipop-dp26251191.ssl-lolipop.jp/line/haipai.php?haipai=";
+            $haipai_url = "https://lolipop-dp26251191.ssl-lolipop.jp/line/haipai.php?haipai=";
 
             for ($i = 0; $i < 14; $i++)
                 $haipai_url .= sprintf("%03d", $haipai[$i]);
@@ -146,18 +163,18 @@ if ($event_type == "message") {
                 $myfname = "record/ランキング.csv";
 
                 if (file_get_contents($fname)) {
-                	if (is_null($data)) {
-	                    // CSVを読み込み
-	                    file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
+                    if (is_null($data)) {
+                        // CSVを読み込み
+                        file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
 
-	                    $csv = new SplFileObject($myfname);
-	                    $csv->setFlags(SplFileObject::READ_CSV);
+                        $csv = new SplFileObject($myfname);
+                        $csv->setFlags(SplFileObject::READ_CSV);
 
-	                    foreach ($csv as $row) {
-	                        if (!is_null($row[0]))
-	                            $data[] = $row;
-	                    }
-	                }
+                        foreach ($csv as $row) {
+                            if (!is_null($row[0]))
+                                $data[] = $row;
+                        }
+                    }
 
                     // ランキングを送信
                     $send_text = $data[0][$i * 2 + 1];
@@ -165,10 +182,10 @@ if ($event_type == "message") {
                         $send_text .= "\n" . "【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
 
                     $messages = [
-                    	[
-	                        "type" => "text",
-	                        "text" => $send_text
-	                    ]
+                        [
+                            "type" => "text",
+                            "text" => $send_text
+                        ]
                     ];
                 }
             }
