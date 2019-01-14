@@ -103,6 +103,7 @@ if ($event_type == "message") {
             $send_text = "(名前)";
             $send_text .= "\n" . "占って";
             $send_text .= "\n" . "配牌";
+            $send_text .= "\n" . "役";
 
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
@@ -113,6 +114,39 @@ if ($event_type == "message") {
                     "text" => $send_text
                 ]
             ];
+        }
+
+        // 役出現率
+        if ($message_text == "役") {
+            $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("役") . ".csv?" . date("YmdHis");
+            $myfname = "record/役.csv";
+
+            if (file_get_contents($fname)) {
+                if (is_null($data)) {
+                    // CSVを読み込み
+                    file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
+
+                    $csv = new SplFileObject($myfname);
+                    $csv->setFlags(SplFileObject::READ_CSV);
+
+                    foreach ($csv as $row) {
+                        if (!is_null($row[0]))
+                            $data[] = $row;
+                    }
+                }
+
+                // 役出現率を送信
+                $send_text = "【" . $data[1][1] ."】" . $data[1][2] . " / " . $data[1][3];
+                for ($i = 2; $i < count($data); $i++)
+                    $send_text .= "\n【" . $data[$i][1] ."】" . $data[$i][2] . " / " . $data[$i][3];
+
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
+            }
         }
 
         // 占って
@@ -179,7 +213,7 @@ if ($event_type == "message") {
                     // ランキングを送信
                     $send_text = $data[0][$i * 2 + 1];
                     for ($j = 1; $j < count($data); $j++)
-                        $send_text .= "\n" . "【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
+                        $send_text .= "\n【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
 
                     $messages = [
                         [
@@ -199,7 +233,7 @@ if ($event_type == "message") {
         $myfname = "record/" . $message_text . ".csv";
 
         // 名前が存在したら
-        if ($message_text != "ランキング" && file_get_contents($fname)) {
+        if ($message_text != "ランキング" && $message_text != "役" && file_get_contents($fname)) {
             // CSVを読み込み
             file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
 
