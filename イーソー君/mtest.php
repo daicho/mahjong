@@ -1,23 +1,9 @@
 <?php
-$groupid = "U370e9c2081a4b305e756946b5f6313a5";
+$groupid = "C9651813f9ebbaa6aa5beb0df65da63b6";
+//$groupid = "U370e9c2081a4b305e756946b5f6313a5";
 $access_token = "p92VGjm5eJxJdzbz/cwIu3ErYj0pTf50tFV/ESKg2mLCHi0fHPvuPSaQ0pKXHspeB9tO+CK/7VPcjJpbPLZ61tZzAe6uq4HLBDmHY4+3YVAKI/BQcsuRbt5OISbA3AzUZV+gUZ7uOpADST8FR2L9HwdB04t89/1O/w1cDnyilFU=";
 
 echo("改行…%0a\n");
-$fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("だいち") . ".csv";
-
-$myfname = "record/だいち3.csv";
-
-file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), "UTF-8", "SJIS"));
-
-$csv = new SplFileObject($myfname);
-$csv->setFlags(SplFileObject::READ_CSV);
-
-foreach ($csv as $row) {
-    if (!is_null($row))
-    	$data[] = $row;
-}
-
-var_dump($data);
 
 $send_text = $_GET["text"];
 
