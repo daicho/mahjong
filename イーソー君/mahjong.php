@@ -168,7 +168,7 @@ if ($event_type == "message") {
         }
 
         // 配牌
-        if (preg_match("/(配牌|はいぱい)/", $message_text)) {
+        if ($message_text == "配牌") {
             for ($i = 1; $i <= 108; $i++)
                 $hai[] = $i;
 
@@ -268,7 +268,8 @@ if ($event_type == "message") {
             $send_text .= "【" . $data[18][0] . "】" . $data[18][1] . " / " . $data[18][2] . "\n";
             $send_text .= "【" . $data[19][0] . "】" . $data[19][1] . "\n";
             $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
-            $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . " / " . $data[21][2];
+            $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . " / " . $data[22][2] . "\n";
+            $send_text .= "【" . $data[25][0] . "】" . $data[25][1] . "\n";
 
             $messages = [
                 [
