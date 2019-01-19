@@ -18,7 +18,8 @@ $rank_str = [
     "リーチ成功率",
     "副露成功率",
     "親アガリ率",
-    "最大ドラ数"
+    "最大ドラ数",
+    "チョンボ"
 ];
 
 $unsei = [
@@ -269,7 +270,8 @@ if ($event_type == "message") {
             $send_text .= "【" . $data[19][0] . "】" . $data[19][1] . "\n";
             $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
             $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . " / " . $data[22][2] . "\n";
-            $send_text .= "【" . $data[25][0] . "】" . $data[25][1];
+            $send_text .= "【" . $data[25][0] . "】" . $data[25][1] . "\n";
+            $send_text .= "【" . $data[26][0] . "】" . $data[26][1] . " / " . $data[26][2];
 
             $messages = [
                 [
