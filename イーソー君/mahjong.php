@@ -278,18 +278,22 @@ if ($event_type == "message") {
                 [
                     "type" => "text",
                     "text" => $send_text
-                ],
-                [
+                ]
+            ];
+
+            if ($message_text != "全体") {
+            	$messages[] = [
                     "type" => "image",
                     "originalContentUrl" => $graph_score,
                     "previewImageUrl" => $graph_score
-                ],
-                [
+                ];
+
+                $messages[] = [
                     "type" => "image",
                     "originalContentUrl" => $graph_kyoku,
                     "previewImageUrl" => $graph_kyoku
-                ]
-            ];
+                ];
+	        }
         }
 
         if (!is_null($messages)) {
