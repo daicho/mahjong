@@ -252,12 +252,16 @@ if ($event_type == "message") {
             $send_text = $data[0][1] . "\n";
             $send_text .= "【" . $data[1][0]  . "】" . $data[1][1]  . "\n";
             $send_text .= "【" . $data[2][0]  . "】" . $data[2][1]  . "\n";
-            $send_text .= "【" . $data[3][0]  . "】" . $data[3][1]  . "\n";
-            $send_text .= "【" . $data[4][0]  . "】" . $data[4][1]  . "\n";
-            $send_text .= "【" . $data[5][0]  . "】" . $data[5][1]  . "\n";
-            $send_text .= "【" . $data[6][0]  . "】" . $data[6][1]  . " / " . $data[6][2]  . "\n";
-            $send_text .= "【" . $data[7][0]  . "】" . $data[7][1]  . " / " . $data[7][2]  . "\n";
-            $send_text .= "【" . $data[8][0]  . "】" . $data[8][1]  . " / " . $data[8][2]  . "\n";
+
+            if ($message_text != "全体") {
+	            $send_text .= "【" . $data[3][0]  . "】" . $data[3][1]  . "\n";
+	            $send_text .= "【" . $data[4][0]  . "】" . $data[4][1]  . "\n";
+	            $send_text .= "【" . $data[5][0]  . "】" . $data[5][1]  . "\n";
+	            $send_text .= "【" . $data[6][0]  . "】" . $data[6][1]  . " / " . $data[6][2]  . "\n";
+	            $send_text .= "【" . $data[7][0]  . "】" . $data[7][1]  . " / " . $data[7][2]  . "\n";
+	            $send_text .= "【" . $data[8][0]  . "】" . $data[8][1]  . " / " . $data[8][2]  . "\n";
+	        }
+
             $send_text .= "【" . $data[9][0]  . "】" . $data[9][1]  . " / " . $data[9][2]  . "\n";
             $send_text .= "【" . $data[10][0] . "】" . $data[10][1] . " / " . $data[10][2] . "\n";
             $send_text .= "【" . $data[11][0] . "】" . $data[11][1] . " / " . $data[11][2] . "\n";
