@@ -104,6 +104,7 @@ if ($event_type == "message") {
         if ($message_text == "使い方") {
             // 対応コマンドの一覧を送信
             $send_text = "(名前)";
+            $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "占って";
             $send_text .= "\n" . "配牌";
             $send_text .= "\n" . "役";
@@ -120,7 +121,7 @@ if ($event_type == "message") {
         }
 
         // 役出現率
-        if ($message_text == "役") {
+        if (strpos($message_text, "役")) {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("役") . ".csv?" . date("YmdHis");
             $myfname = "record/役.csv";
 
@@ -231,7 +232,6 @@ if ($event_type == "message") {
         // 成績
         $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/";
         $fname = $record . urlencode($message_text) . ".csv?" . date("YmdHis");
-        $gfile = $record . urlencode($message_text) . ".png?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
@@ -301,8 +301,12 @@ if ($event_type == "message") {
 	        }
         }
 
+		// グラフ
+        $gfile = $record . str_replace("+", "%20", urlencode($message_text)) . ".png?" . date("YmdHis");
+
         // グラフ名が存在したら
         if (file_get_contents($gfile)) {
+
             $messages = [
                 [
                     "type" => "image",
