@@ -20,6 +20,7 @@ $rank_str = [
     "ツモ率",
     "親アガリ率",
     "最大ドラ数",
+    "最大点数",
     "チョンボ"
 ];
 
@@ -277,7 +278,8 @@ if ($event_type == "message") {
             $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
             $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . " / " . $data[22][2] . "\n";
             $send_text .= "【" . $data[25][0] . "】" . $data[25][1] . "\n";
-            $send_text .= "【" . $data[26][0] . "】" . $data[26][1] . " / " . $data[26][2];
+            $send_text .= "【" . $data[26][0] . "】" . $data[26][1] . "\n";
+            $send_text .= "【" . $data[27][0] . "】" . $data[27][1] . " / " . $data[27][2];
 
             $messages = [
                 [
