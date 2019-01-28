@@ -231,6 +231,7 @@ if ($event_type == "message") {
         // 成績
         $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/";
         $fname = $record . urlencode($message_text) . ".csv?" . date("YmdHis");
+        $gfile = $record . urlencode($message_text) . ".png?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
@@ -298,6 +299,17 @@ if ($event_type == "message") {
                     "previewImageUrl" => $graph_kyoku
                 ];
 	        }
+        }
+
+        // グラフ名が存在したら
+        if (file_get_contents($gfile)) {
+            $messages = [
+                [
+                    "type" => "image",
+                    "originalContentUrl" => $gfile,
+                    "previewImageUrl" => $gfile
+                ]
+            ];
         }
 
         if (!is_null($messages)) {
