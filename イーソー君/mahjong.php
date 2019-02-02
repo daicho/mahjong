@@ -105,6 +105,8 @@ if ($event_type == "message") {
         if ($message_text == "使い方") {
             // 対応コマンドの一覧を送信
             $send_text = "(名前)";
+            $send_text .= "\n" . "(名前) 役";
+            $send_text .= "\n" . "(名前) 相性";
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "占って";
             $send_text .= "\n" . "配牌";
@@ -199,7 +201,7 @@ if ($event_type == "message") {
 
         // 成績
         $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/";
-        $fname = $record . urlencode(str_replace(" 役", "", $message_text)) . ".csv?" . date("YmdHis");
+        $fname = $record . urlencode(str_replace([" 役", " 相性"], ["", ""], $message_text)) . ".csv?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
@@ -222,6 +224,18 @@ if ($event_type == "message") {
                 $send_text = $data[0][1];
                 for ($i = 1; $i <= 50; $i++)
                     $send_text .= "\n【" . $data[$i][5] ."】" . $data[$i][6] . " / " . $data[$i][7] . " (" . $data[$i][8] . ")";
+
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
+			} else if (strpos($message_text, "相性")) {
+                // 相性を送信
+                $send_text = $data[0][1];
+                for ($i = 9; $data[$i][13] != ""; $i++)
+                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14];
 
                 $messages = [
                     [
