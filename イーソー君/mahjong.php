@@ -221,7 +221,7 @@ if ($event_type == "message") {
 
 			if (strpos($message_text, "役")) {
                 // 役出現率を送信
-                $send_text = $data[0][1];
+                $send_text = $data[0][1] . " 役";
                 for ($i = 1; $i <= 50; $i++)
                     $send_text .= "\n【" . $data[$i][5] ."】" . $data[$i][6] . " / " . $data[$i][7] . " (" . $data[$i][8] . ")";
 
@@ -233,9 +233,9 @@ if ($event_type == "message") {
                 ];
 			} else if (strpos($message_text, "相性")) {
                 // 相性を送信
-                $send_text = $data[0][1];
+                $send_text = $data[0][1] . " 相性";
                 for ($i = 9; $data[$i][13] != ""; $i++)
-                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14];
+                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14] . " (" . $data[$i][16] . ")";
 
                 $messages = [
                     [
