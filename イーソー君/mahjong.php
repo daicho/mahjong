@@ -110,7 +110,6 @@ if ($event_type == "message") {
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "占って";
             $send_text .= "\n" . "配牌";
-            $send_text .= "\n" . "役";
 
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
