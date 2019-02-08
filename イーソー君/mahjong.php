@@ -110,6 +110,7 @@ if ($event_type == "message") {
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "占って";
             $send_text .= "\n" . "配牌";
+            $send_text .= "\n" . "清一色";
 
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
@@ -139,11 +140,23 @@ if ($event_type == "message") {
             ];
         }
 
+        $haipai_flag = false;
+
         // 配牌
         if ($message_text == "配牌") {
+        	$haipai_flag = true;
             for ($i = 1; $i <= 108; $i++)
                 $hai[] = $i;
+        }
 
+        // 清一色
+        if ($message_text == "清一色" || $message_text == "チンイツ") {
+        	$haipai_flag = true;
+            for ($i = 37; $i <= 72; $i++)
+                $hai[] = $i;
+        }
+
+        if ($haipai_flag) {
             shuffle($hai);
             $haipai = array_slice($hai, 0, 14);
             sort($haipai);
