@@ -145,15 +145,15 @@ if ($event_type == "message") {
         // 配牌
         if ($message_text == "配牌") {
         	$haipai_flag = true;
-            for ($i = 1; $i <= 108; $i++)
-                $hai[] = $i;
+            for ($i = 0; $i < 108; $i++)
+                $hai[] = $i / 4 + 1;
         }
 
         // 清一色
         if ($message_text == "清一色" || $message_text == "チンイツ") {
         	$haipai_flag = true;
-            for ($i = 37; $i <= 72; $i++)
-                $hai[] = $i;
+            for ($i = 36; $i < 72; $i++)
+                $hai[] = $i / 4 + 1;
         }
 
         if ($haipai_flag) {
