@@ -7,6 +7,7 @@ $rank_str = [
     "平均スコア",
     "平均順位",
     "トップ率",
+    "ラス率",
     "アガリ率",
     "放銃率",
     "平均アガリ点",
@@ -111,6 +112,7 @@ if ($event_type == "message") {
             $send_text .= "\n" . "占って";
             $send_text .= "\n" . "配牌";
             $send_text .= "\n" . "清一色";
+            $send_text .= "\n" . "相関";
 
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
@@ -197,8 +199,12 @@ if ($event_type == "message") {
                     }
 
                     // ランキングを送信
-                    $send_text = $data[0][$i * 2 + 1];
-                    for ($j = 1; $j < count($data); $j++)
+                    if ($data[1][$i * 2 + 1] == "")
+                    	$send_text = $data[0][$i * 2 + 1];
+                    else
+                    	$send_text = $data[0][$i * 2 + 1] . " [" . $data[1][$i * 2 + 1] . "]";
+
+                    for ($j = 2; $j < count($data); $j++)
                         $send_text .= "\n【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
 
                     $messages = [
@@ -208,6 +214,38 @@ if ($event_type == "message") {
                         ]
                     ];
                 }
+            }
+        }
+
+        // 相関係数
+        if ($message_text == "相関") {
+            $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
+            $myfname = "record/ランキング.csv";
+
+            if (file_get_contents($fname)) {
+                if (is_null($data)) {
+                    // CSVを読み込み
+                    file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
+
+                    $csv = new SplFileObject($myfname);
+                    $csv->setFlags(SplFileObject::READ_CSV);
+
+                    foreach ($csv as $row) {
+                        if (!is_null($row[0]))
+                            $data[] = $row;
+                    }
+                }
+
+                $send_text = "相関";
+                for ($i = 5; $i < count($data); $i += 2)
+                    $send_text .= "\n【" . $data[0][$i] . "】" . $data[1][$i];
+
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
             }
         }
 
