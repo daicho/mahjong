@@ -237,7 +237,7 @@ if ($event_type == "message") {
                 }
 
                 $send_text = "相関";
-                for ($i = 5; $i < count($data); $i += 2)
+                for ($i = 5; $i < count($data[0]); $i += 2)
                     $send_text .= "\n【" . $data[0][$i] . "】" . $data[1][$i];
 
                 $messages = [
