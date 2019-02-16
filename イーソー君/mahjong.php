@@ -108,7 +108,7 @@ if ($event_type == "message") {
             $send_text = "(名前)";
             $send_text .= "\n" . "(名前) 役";
             $send_text .= "\n" . "(名前) 局別";
-            $send_text .= "\n" . "(名前) 起家別";
+            $send_text .= "\n" . "(名前) 起家";
             $send_text .= "\n" . "(名前) 相性";
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "占って";
