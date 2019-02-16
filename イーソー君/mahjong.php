@@ -251,7 +251,7 @@ if ($event_type == "message") {
 
         // 成績
         $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/";
-        $fname = $record . urlencode(str_replace([" 役", " 相性"], ["", ""], $message_text)) . ".csv?" . date("YmdHis");
+        $fname = $record . urlencode(str_replace([" 役", " 局別", " 起家", " 相性"], ["", "", "", ""], $message_text)) . ".csv?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
@@ -281,11 +281,12 @@ if ($event_type == "message") {
                         "text" => $send_text
                     ]
                 ];
-			} else if (strpos($message_text, "相性")) {
-                // 相性を送信
-                $send_text = $data[0][1] . " 相性";
-                for ($i = 9; $data[$i][13] != ""; $i++)
-                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14] . " (" . $data[$i][16] . ")";
+
+			} else if (strpos($message_text, "局別")) {
+                // 局別スコアを送信
+                $send_text = $data[0][1] . " 局別";
+                for ($i = 1; $i <= 6; $i++)
+                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14] . " (" . $data[$i][15] . ")";
 
                 $messages = [
                     [
@@ -293,6 +294,33 @@ if ($event_type == "message") {
                         "text" => $send_text
                     ]
                 ];
+
+			} else if (strpos($message_text, "起家")) {
+                // 起家別スコアを送信
+                $send_text = $data[0][1] . " 起家";
+                for ($i = 9; $i <= 11; $i++)
+                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14] . " (" . $data[$i][15] . ")";
+
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
+
+			} else if (strpos($message_text, "相性")) {
+                // 相性を送信
+                $send_text = $data[0][1] . " 相性";
+                for ($i = 14; $data[$i][13] != ""; $i++)
+                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14] . " (" . $data[$i][15] . ")";
+
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
+
 			} else {
 	            // 成績を送信
 	            $send_text = $data[0][1] . "\n";
