@@ -107,6 +107,8 @@ if ($event_type == "message") {
             // 対応コマンドの一覧を送信
             $send_text = "(名前)";
             $send_text .= "\n" . "(名前) 役";
+            $send_text .= "\n" . "(名前) 局別";
+            $send_text .= "\n" . "(名前) 起家別";
             $send_text .= "\n" . "(名前) 相性";
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "占って";
@@ -286,7 +288,7 @@ if ($event_type == "message") {
                 // 局別スコアを送信
                 $send_text = $data[0][1] . " 局別";
                 for ($i = 1; $i <= 6; $i++)
-                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14] . " (" . $data[$i][15] . ")";
+                    $send_text .= "\n【" . $data[$i][13] ."】" . $data[$i][14];
 
                 $messages = [
                     [
