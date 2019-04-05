@@ -140,6 +140,20 @@ if ($event_type == "message") {
             goto send;
         }
 
+        // ルール
+        if ($message_text == "ルール") {
+            $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("ルール") . ".txt?" . date("YmdHis");
+
+            $messages = [
+                [
+                    "type" => "text",
+                    "text" => file_get_contents($fname)
+                ]
+            ];
+
+            goto send;
+        }
+
         // 占って
         if (preg_match("/(運勢|占|うらな)/", $message_text)) {
             $unsei_rand = mt_rand(0, count($unsei) - 1);
