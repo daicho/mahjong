@@ -22,13 +22,13 @@ $access_token = "p92VGjm5eJxJdzbz/cwIu3ErYj0pTf50tFV/ESKg2mLCHi0fHPvuPSaQ0pKXHsp
 $send_text = $_POST["text"];
 
 $post_data = [
-	"to" => $groupid,
-	"messages" => [
-		[
-			"type" => "text",
-		    "text" => $send_text
-		]
-	]
+    "to" => $groupid,
+    "messages" => [
+        [
+            "type" => "text",
+            "text" => $send_text
+        ]
+    ]
 ];
 
 // curlを使用してメッセージを返信する
@@ -38,7 +38,7 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-	"Content-Type:application/json",
+    "Content-Type:application/json",
     "Authorization:Bearer " . $access_token
 ));
 $result = curl_exec($ch);

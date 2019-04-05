@@ -102,6 +102,13 @@ if ($event_type == "message") {
     if ($message_type == "text") {
         $message_text = $event->message->text;
 
+        if (strpos($message_text, "1st\n") === false) {
+            $dirname = "麻雀同好会2nd";
+        } else {
+            $dirname = "麻雀同好会1st";
+            $message_text = str_replace("1st\n", "", $message_text);
+        }
+
         // 使い方
         if ($message_text == "使い方") {
             // 対応コマンドの一覧を送信
@@ -125,6 +132,8 @@ if ($event_type == "message") {
                     "text" => $send_text
                 ]
             ];
+
+            goto send;
         }
 
         // 占って
@@ -142,20 +151,22 @@ if ($event_type == "message") {
                     "stickerId" => $unsei[$unsei_rand]["stkid"]
                 ]
             ];
+
+            goto send;
         }
 
         $haipai_flag = false;
 
         // 配牌
         if ($message_text == "配牌") {
-        	$haipai_flag = true;
+            $haipai_flag = true;
             for ($i = 0; $i < 108; $i++)
                 $hai[] = $i / 4 + 1;
         }
 
         // 清一色
         if ($message_text == "清一色" || $message_text == "チンイツ") {
-        	$haipai_flag = true;
+            $haipai_flag = true;
             for ($i = 36; $i < 72; $i++)
                 $hai[] = $i / 4 + 1;
         }
@@ -177,51 +188,13 @@ if ($event_type == "message") {
                     "previewImageUrl" => $haipai_url
                 ]
             ];
-        }
 
-        // ランキング
-        for ($i = 0; $i < count($rank_str); $i++) {
-            // ランキングのいずれかに一致したら
-            if ($message_text == $rank_str[$i]) {
-                $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
-                $myfname = "record/ランキング.csv";
-
-                if (file_get_contents($fname)) {
-                    if (is_null($data)) {
-                        // CSVを読み込み
-                        file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
-
-                        $csv = new SplFileObject($myfname);
-                        $csv->setFlags(SplFileObject::READ_CSV);
-
-                        foreach ($csv as $row) {
-                            if (!is_null($row[0]))
-                                $data[] = $row;
-                        }
-                    }
-
-                    // ランキングを送信
-                    if ($data[1][$i * 2 + 1] == "")
-                    	$send_text = $data[0][$i * 2 + 1];
-                    else
-                    	$send_text = $data[0][$i * 2 + 1] . " [" . $data[1][$i * 2 + 1] . "]";
-
-                    for ($j = 2; $j < count($data); $j++)
-                        $send_text .= "\n【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
-
-                    $messages = [
-                        [
-                            "type" => "text",
-                            "text" => $send_text
-                        ]
-                    ];
-                }
-            }
+            goto send;
         }
 
         // 相関係数
         if ($message_text == "相関") {
-            $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
+            $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
             $myfname = "record/ランキング.csv";
 
             if (file_get_contents($fname)) {
@@ -249,17 +222,19 @@ if ($event_type == "message") {
                     ]
                 ];
             }
+
+            goto send;
         }
 
         // 成績
-        $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode("三人麻雀") . "/" . urlencode("成績") . "/";
+        $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/";
         $fname = $record . urlencode(str_replace([" 役", " 局別", " 起家", " 相性"], ["", "", "", ""], $message_text)) . ".csv?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
 
         // 名前が存在したら
-        if (file_get_contents($fname)) {
+        if (file_get_contents($fname) && $message_text != "ランキング") {
             // CSVを読み込み
             file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
 
@@ -271,7 +246,7 @@ if ($event_type == "message") {
                     $data[] = $row;
             }
 
-			if (strpos($message_text, "役")) {
+            if (strpos($message_text, "役")) {
                 // 役出現率を送信
                 $send_text = $data[0][1] . " 役";
                 for ($i = 1; $i <= 50; $i++)
@@ -284,7 +259,7 @@ if ($event_type == "message") {
                     ]
                 ];
 
-			} else if (strpos($message_text, "局別")) {
+            } else if (strpos($message_text, "局別")) {
                 // 局別スコアを送信
                 $send_text = $data[0][1] . " 局別";
                 for ($i = 1; $i <= 6; $i++)
@@ -297,7 +272,7 @@ if ($event_type == "message") {
                     ]
                 ];
 
-			} else if (strpos($message_text, "起家")) {
+            } else if (strpos($message_text, "起家")) {
                 // 起家別スコアを送信
                 $send_text = $data[0][1] . " 起家";
                 for ($i = 9; $i <= 11; $i++)
@@ -310,7 +285,7 @@ if ($event_type == "message") {
                     ]
                 ];
 
-			} else if (strpos($message_text, "相性")) {
+            } else if (strpos($message_text, "相性")) {
                 // 相性を送信
                 $send_text = $data[0][1] . " 相性";
                 for ($i = 14; $data[$i][13] != ""; $i++)
@@ -323,62 +298,64 @@ if ($event_type == "message") {
                     ]
                 ];
 
-			} else {
-	            // 成績を送信
-	            $send_text = $data[0][1] . "\n";
-	            $send_text .= "【" . $data[1][0]  . "】" . $data[1][1]  . "\n";
-	            $send_text .= "【" . $data[2][0]  . "】" . $data[2][1]  . "\n";
+            } else {
+                // 成績を送信
+                $send_text = $data[0][1] . "\n";
+                $send_text .= "【" . $data[1][0]  . "】" . $data[1][1]  . "\n";
+                $send_text .= "【" . $data[2][0]  . "】" . $data[2][1]  . "\n";
 
-	            if ($message_text != "全体") {
-		            $send_text .= "【" . $data[3][0]  . "】" . $data[3][1]  . "\n";
-		            $send_text .= "【" . $data[4][0]  . "】" . $data[4][1]  . "\n";
-		            $send_text .= "【" . $data[5][0]  . "】" . $data[5][1]  . "\n";
-		            $send_text .= "【" . $data[6][0]  . "】" . $data[6][1]  . " / " . $data[6][2]  . "\n";
-		            $send_text .= "【" . $data[7][0]  . "】" . $data[7][1]  . " / " . $data[7][2]  . "\n";
-		            $send_text .= "【" . $data[8][0]  . "】" . $data[8][1]  . " / " . $data[8][2]  . "\n";
-		        }
+                if ($message_text != "全体") {
+                    $send_text .= "【" . $data[3][0]  . "】" . $data[3][1]  . "\n";
+                    $send_text .= "【" . $data[4][0]  . "】" . $data[4][1]  . "\n";
+                    $send_text .= "【" . $data[5][0]  . "】" . $data[5][1]  . "\n";
+                    $send_text .= "【" . $data[6][0]  . "】" . $data[6][1]  . " / " . $data[6][2]  . "\n";
+                    $send_text .= "【" . $data[7][0]  . "】" . $data[7][1]  . " / " . $data[7][2]  . "\n";
+                    $send_text .= "【" . $data[8][0]  . "】" . $data[8][1]  . " / " . $data[8][2]  . "\n";
+                }
 
-	            $send_text .= "【" . $data[9][0]  . "】" . $data[9][1]  . " / " . $data[9][2]  . "\n";
-	            $send_text .= "【" . $data[10][0] . "】" . $data[10][1] . " / " . $data[10][2] . "\n";
-	            $send_text .= "【" . $data[11][0] . "】" . $data[11][1] . " / " . $data[11][2] . "\n";
-	            $send_text .= "【" . $data[12][0] . "】" . $data[12][1] . " / " . $data[12][2] . "\n";
-	            $send_text .= "【" . $data[13][0] . "】" . $data[13][1] . " / " . $data[13][2] . "\n";
-	            $send_text .= "【" . $data[14][0] . "】" . $data[14][1] . " / " . $data[14][2] . "\n";
-	            $send_text .= "【" . $data[15][0] . "】" . $data[15][1] . " / " . $data[15][2] . "\n";
-	            $send_text .= "【" . $data[16][0] . "】" . $data[16][1] . " / " . $data[16][2] . "\n";
-	            $send_text .= "【" . $data[17][0] . "】" . $data[17][1] . " / " . $data[17][2] . "\n";
-	            $send_text .= "【" . $data[18][0] . "】" . $data[18][1] . " / " . $data[18][2] . "\n";
-	            $send_text .= "【" . $data[19][0] . "】" . $data[19][1] . " / " . $data[19][2] . "\n";
-	            $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
-	            $send_text .= "【" . $data[21][0] . "】" . $data[21][1] . "\n";
-	            $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . "\n";
-	            $send_text .= "【" . $data[23][0] . "】" . $data[23][1] . "\n";
-	            $send_text .= "【" . $data[24][0] . "】" . $data[24][1] . " / " . $data[24][2];
+                $send_text .= "【" . $data[9][0]  . "】" . $data[9][1]  . " / " . $data[9][2]  . "\n";
+                $send_text .= "【" . $data[10][0] . "】" . $data[10][1] . " / " . $data[10][2] . "\n";
+                $send_text .= "【" . $data[11][0] . "】" . $data[11][1] . " / " . $data[11][2] . "\n";
+                $send_text .= "【" . $data[12][0] . "】" . $data[12][1] . " / " . $data[12][2] . "\n";
+                $send_text .= "【" . $data[13][0] . "】" . $data[13][1] . " / " . $data[13][2] . "\n";
+                $send_text .= "【" . $data[14][0] . "】" . $data[14][1] . " / " . $data[14][2] . "\n";
+                $send_text .= "【" . $data[15][0] . "】" . $data[15][1] . " / " . $data[15][2] . "\n";
+                $send_text .= "【" . $data[16][0] . "】" . $data[16][1] . " / " . $data[16][2] . "\n";
+                $send_text .= "【" . $data[17][0] . "】" . $data[17][1] . " / " . $data[17][2] . "\n";
+                $send_text .= "【" . $data[18][0] . "】" . $data[18][1] . " / " . $data[18][2] . "\n";
+                $send_text .= "【" . $data[19][0] . "】" . $data[19][1] . " / " . $data[19][2] . "\n";
+                $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
+                $send_text .= "【" . $data[21][0] . "】" . $data[21][1] . "\n";
+                $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . "\n";
+                $send_text .= "【" . $data[23][0] . "】" . $data[23][1] . "\n";
+                $send_text .= "【" . $data[24][0] . "】" . $data[24][1] . " / " . $data[24][2];
 
-	            $messages = [
-	                [
-	                    "type" => "text",
-	                    "text" => $send_text
-	                ]
-	            ];
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
 
-	            if ($message_text != "全体") {
-	            	$messages[] = [
-	                    "type" => "image",
-	                    "originalContentUrl" => $graph_score,
-	                    "previewImageUrl" => $graph_score
-	                ];
+                if ($message_text != "全体") {
+                    $messages[] = [
+                        "type" => "image",
+                        "originalContentUrl" => $graph_score,
+                        "previewImageUrl" => $graph_score
+                    ];
 
-	                $messages[] = [
-	                    "type" => "image",
-	                    "originalContentUrl" => $graph_kyoku,
-	                    "previewImageUrl" => $graph_kyoku
-	                ];
-		        }
-		    }
+                    $messages[] = [
+                        "type" => "image",
+                        "originalContentUrl" => $graph_kyoku,
+                        "previewImageUrl" => $graph_kyoku
+                    ];
+                }
+            }
+
+            goto send;
         }
 
-		// グラフ
+        // グラフ
         $gfile = $record . str_replace("+", "%20", urlencode($message_text)) . ".png?" . date("YmdHis");
 
         // グラフ名が存在したら
@@ -391,8 +368,11 @@ if ($event_type == "message") {
                     "previewImageUrl" => $gfile
                 ]
             ];
+
+            goto send;
         }
 
+send:
         if (!is_null($messages)) {
             // 送信データ
             $post_data = [
@@ -413,5 +393,64 @@ if ($event_type == "message") {
             $result = curl_exec($ch);
             curl_close($ch);
         }
+
+        // ランキング
+        $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
+        $myfname = "record/ランキング.csv";
+
+        if (file_get_contents($fname)) {
+            if (is_null($data)) {
+                // CSVを読み込み
+                file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
+
+                $csv = new SplFileObject($myfname);
+                $csv->setFlags(SplFileObject::READ_CSV);
+
+                foreach ($csv as $row) {
+                    if (!is_null($row[0]))
+                        $data[] = $row;
+                }
+            }
+        }
+
+        $ch = curl_init("https://api.line.me/v2/bot/message/push");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Content-Type:application/json",
+            "Authorization:Bearer " . ACCESS_TOKEN
+        ));
+
+        for ($i = 0; $i < count($rank_str); $i++) {
+            // ランキングのいずれかに一致したら
+            if ($message_text == $rank_str[$i] || $message_text == "ランキング") {
+                // ランキングを送信
+                if ($data[1][$i * 2 + 1] == "")
+                    $send_text = $data[0][$i * 2 + 1];
+                else
+                    $send_text = $data[0][$i * 2 + 1] . " [" . $data[1][$i * 2 + 1] . "]";
+
+                for ($j = 2; $j < count($data); $j++)
+                    $send_text .= "\n【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
+
+                // 送信データ
+                $post_data = [
+                    "to" => $source_id,
+                    "messages" => [
+                        [
+                            "type" => "text",
+                            "text" => $send_text
+                        ]
+                    ]
+                ];
+
+                // curlを使用してメッセージを返信する
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+                $result = curl_exec($ch);
+            }
+        }
+
+        curl_close($ch);
     }
 }
