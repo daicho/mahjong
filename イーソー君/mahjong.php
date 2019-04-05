@@ -68,11 +68,14 @@ $line_json = file_get_contents("php://input");
 $line_obj = json_decode($line_json);
 $event = $line_obj->events[0];
 $event_type = $event->type;
-$source_id = $event->source->userId;
 $replytoken = $event->replyToken;
 
-/*
-$post_data = [
+if (is_null($event->source->groupId))
+    $source_id = $event->source->userId;
+else
+    $source_id = $event->source->groupId;
+
+/*$post_data = [
     "to" => USER_ID,
     "messages" => [
         [
@@ -80,7 +83,7 @@ $post_data = [
             "text" => $line_json
         ]
     ]
-];
+];*/
 
 // curlを使用してメッセージを返信する
 $ch = curl_init("https://api.line.me/v2/bot/message/push");
@@ -94,7 +97,6 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 ));
 $result = curl_exec($ch);
 curl_close($ch);
-*/
 
 if ($event_type == "message") {
     $message_type = $event->message->type;
@@ -118,13 +120,15 @@ if ($event_type == "message") {
             $send_text .= "\n" . "(名前) 起家";
             $send_text .= "\n" . "(名前) 相性";
             $send_text .= "\n" . "(名前) (項目名)";
+            $send_text .= "\n" . "ランキング";
+
+            for ($i = 0; $i < count($rank_str); $i++)
+                $send_text .= "\n" . $rank_str[$i];
+
             $send_text .= "\n" . "占って";
             $send_text .= "\n" . "配牌";
             $send_text .= "\n" . "清一色";
             $send_text .= "\n" . "相関";
-
-            for ($i = 0; $i < count($rank_str); $i++)
-                $send_text .= "\n" . $rank_str[$i];
 
             $messages = [
                 [
