@@ -120,6 +120,8 @@ if ($event_type == "message") {
             $send_text .= "\n" . "(名前) 起家";
             $send_text .= "\n" . "(名前) 相性";
             $send_text .= "\n" . "(名前) (項目名)";
+            $send_text .= "\n" . "使い方";
+            $send_text .= "\n" . "ルール";
             $send_text .= "\n" . "ランキング";
 
             for ($i = 0; $i < count($rank_str); $i++)
@@ -143,6 +145,7 @@ if ($event_type == "message") {
         // ルール
         if ($message_text == "ルール") {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("ルール") . ".txt?" . date("YmdHis");
+            $send_text = file_get_contents($fname);
 
             $messages = [
                 [
