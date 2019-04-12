@@ -120,6 +120,7 @@ if ($event_type == "message") {
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "使い方";
             $send_text .= "\n" . "ルール";
+            $send_text .= "\n" . "大会 (番号)";
             $send_text .= "\n" . "ランキング";
 
             for ($i = 0; $i < count($rank_str); $i++)
@@ -148,7 +149,22 @@ if ($event_type == "message") {
             $messages = [
                 [
                     "type" => "text",
-                    "text" => file_get_contents($fname)
+                    "text" => $send_text
+                ]
+            ];
+
+            goto send;
+        }
+
+        // 大会
+        if (preg_match("/大会 ?(.+)/", $message_text, $code)) {
+            $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("大会") . "/" . $code[1] . "/" . urlencode("概要") . ".txt?" . date("YmdHis");
+            $send_text = file_get_contents($fname);
+
+            $messages = [
+                [
+                    "type" => "text",
+                    "text" => $fname
                 ]
             ];
 
@@ -345,8 +361,8 @@ if ($event_type == "message") {
                 $send_text .= "【" . $data[19][0] . "】" . $data[19][1] . " / " . $data[19][2] . "\n";
 
                 if ($message_text != "全体") {
-	                $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
-	                $send_text .= "【" . $data[21][0] . "】" . $data[21][1] . "\n";
+                    $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
+                    $send_text .= "【" . $data[21][0] . "】" . $data[21][1] . "\n";
                 }
 
                 $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . "\n";
