@@ -283,7 +283,7 @@ if ($event_type == "message") {
             if (strpos($message_text, "役")) {
                 // 役出現率を送信
                 $send_text = $data[0][1] . " 役";
-                for ($i = 1; $i <= 50; $i++)
+                for ($i = 1; $data[$i][4]; $i++)
                     $send_text .= "\n【" . $data[$i][5] ."】" . $data[$i][6] . " / " . $data[$i][7] . " (" . $data[$i][8] . ")";
 
                 $messages = [
