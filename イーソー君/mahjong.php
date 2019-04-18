@@ -119,17 +119,16 @@ if ($event_type == "message") {
             $send_text .= "\n" . "(名前) 相性";
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "使い方";
+            $send_text .= "\n" . "占って";
+            $send_text .= "\n" . "配牌";
+            $send_text .= "\n" . "清一色";
             $send_text .= "\n" . "ルール";
             $send_text .= "\n" . "大会 (番号)";
+            $send_text .= "\n" . "相関";
             $send_text .= "\n" . "ランキング";
 
             for ($i = 0; $i < count($rank_str); $i++)
                 $send_text .= "\n" . $rank_str[$i];
-
-            $send_text .= "\n" . "占って";
-            $send_text .= "\n" . "配牌";
-            $send_text .= "\n" . "清一色";
-            $send_text .= "\n" . "相関";
 
             $messages = [
                 [
