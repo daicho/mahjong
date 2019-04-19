@@ -101,7 +101,6 @@ if ($event_type == "message") {
 
     if ($message_type == "text") {
         $message_text = $event->message->text;
-        $name = str_replace([" 役", " 局別", " 起家", " 相性", " 推移"], ["", "", "", "", ""], $message_text);
 
         if (strpos($message_text, "1st\n") === false) {
             $dirname = "麻雀同好会2nd";
@@ -264,6 +263,7 @@ if ($event_type == "message") {
 
         // 成績
         $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/";
+        $name = str_replace([" 役", " 局別", " 起家", " 相性"], "", $message_text);
         $fname = $record . urlencode($name) . ".csv?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
@@ -448,8 +448,10 @@ send:
 
         // 推移
         if (strpos($message_text, "推移")) {
+            $name = str_replace(" 推移", "", $message_text);
+
             foreach ($rank_str as $item) {
-                $gfile = $record . urlencode($name) . "+" . urlencode($item) . ".png?" . date("YmdHis");
+                $gfile = $record . urlencode($name) . "%20" . urlencode($item) . ".png?" . date("YmdHis");
 
                 // グラフ名が存在したら
                 if (file_get_contents($gfile)) {
