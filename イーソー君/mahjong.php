@@ -101,6 +101,7 @@ if ($event_type == "message") {
 
     if ($message_type == "text") {
         $message_text = $event->message->text;
+        $name = str_replace([" 役", " 局別", " 起家", " 相性", " 推移"], ["", "", "", "", ""], $message_text);
 
         if (strpos($message_text, "1st\n") === false) {
             $dirname = "麻雀同好会2nd";
@@ -117,6 +118,7 @@ if ($event_type == "message") {
             $send_text .= "\n" . "(名前) 局別";
             $send_text .= "\n" . "(名前) 起家";
             $send_text .= "\n" . "(名前) 相性";
+            $send_text .= "\n" . "(名前) 推移";
             $send_text .= "\n" . "(名前) (項目名)";
             $send_text .= "\n" . "使い方";
             $send_text .= "\n" . "占って";
@@ -262,7 +264,7 @@ if ($event_type == "message") {
 
         // 成績
         $record = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/";
-        $fname = $record . urlencode(str_replace([" 役", " 局別", " 起家", " 相性"], ["", "", "", ""], $message_text)) . ".csv?" . date("YmdHis");
+        $fname = $record . urlencode($name) . ".csv?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
@@ -434,6 +436,42 @@ send:
             curl_close($ch);
         }
 
+        // Push設定
+        $ch = curl_init("https://api.line.me/v2/bot/message/push");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Content-Type:application/json",
+            "Authorization:Bearer " . ACCESS_TOKEN
+        ));
+
+        // 推移
+        if (strpos($message_text, "推移")) {
+            foreach ($rank_str as $item) {
+                $gfile = $record . urlencode($name) . "+" . urlencode($item) . ".png?" . date("YmdHis");
+
+                // グラフ名が存在したら
+                if (file_get_contents($gfile)) {
+                    // 送信データ
+                    $post_data = [
+                        "to" => $source_id,
+                        "messages" => [
+                            [
+                                "type" => "image",
+                                "originalContentUrl" => $gfile,
+                                "previewImageUrl" => $gfile
+                            ]
+                        ]
+                    ];
+
+                    // curlを使用してメッセージを返信する
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+                    $result = curl_exec($ch);
+                }
+            }
+        }
+
         // ランキング
         $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
         $myfname = "record/ランキング.csv";
@@ -452,15 +490,6 @@ send:
                 }
             }
         }
-
-        $ch = curl_init("https://api.line.me/v2/bot/message/push");
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Content-Type:application/json",
-            "Authorization:Bearer " . ACCESS_TOKEN
-        ));
 
         for ($i = 0; $i < count($rank_str); $i++) {
             // ランキングのいずれかに一致したら
