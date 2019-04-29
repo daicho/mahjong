@@ -229,7 +229,7 @@ if ($event_type == "message") {
         // 相関係数
         if ($message_text == "相関") {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
-            $myfname = "record/ランキング.csv";
+            $myfname = "record/ランキング.csv?" . date("YmdHis");
 
             if (file_get_contents($fname)) {
                 if (is_null($data)) {
@@ -475,7 +475,7 @@ send:
 
         // ランキング
         $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
-        $myfname = "record/ランキング.csv";
+        $myfname = "record/ランキング.csv?" . date("YmdHis");
 
         if (file_get_contents($fname)) {
             if (is_null($data)) {
