@@ -145,12 +145,14 @@ if ($event_type == "message") {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("ルール") . ".txt?" . date("YmdHis");
             $send_text = file_get_contents($fname);
 
-            $messages = [
-                [
-                    "type" => "text",
-                    "text" => $send_text
-                ]
-            ];
+			if ($send_text) {
+	            $messages = [
+	                [
+	                    "type" => "text",
+	                    "text" => $send_text
+	                ]
+	            ];
+	        }
 
             goto send;
         }
@@ -160,12 +162,14 @@ if ($event_type == "message") {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("大会") . "/" . $code[1] . "/" . urlencode("概要") . ".txt?" . date("YmdHis");
             $send_text = file_get_contents($fname);
 
-            $messages = [
-                [
-                    "type" => "text",
-                    "text" => $fname
-                ]
-            ];
+			if ($send_text) {
+	            $messages = [
+	                [
+	                    "type" => "text",
+	                    "text" => $send_text
+	                ]
+	            ];
+	        }
 
             goto send;
         }
