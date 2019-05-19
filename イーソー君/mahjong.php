@@ -72,7 +72,8 @@ if (is_null($event->source->groupId))
 else
     $source_id = $event->source->groupId;
 
-/*$post_data = [
+/*
+$post_data = [
     "to" => USER_ID,
     "messages" => [
         [
@@ -80,7 +81,7 @@ else
             "text" => $line_json
         ]
     ]
-];*/
+];
 
 // curlを使用してメッセージを返信する
 $ch = curl_init("https://api.line.me/v2/bot/message/push");
@@ -94,18 +95,46 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 ));
 $result = curl_exec($ch);
 curl_close($ch);
+*/
 
-if ($event_type == "message") {
+if ($event_type == "follow" || $event_type == "join") {
+    // 送信データ
+    $post_data = [
+        "replyToken" => $replytoken,
+        "messages" => [
+        	[
+	            "type" => "text",
+	            "text" => "イーソー君だよ！\n" .
+	                      "自分の名前を送信すると成績が見られるよ！\n" .
+	                      "すべての機能を見るには「使い方」と送信してね！"
+	    	]
+        ]
+    ];
+
+    // curlを使用してメッセージを返信する
+    $ch = curl_init("https://api.line.me/v2/bot/message/reply");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Content-Type:application/json",
+        "Authorization:Bearer " . ACCESS_TOKEN
+    ));
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+} elseif ($event_type == "message") {
     $message_type = $event->message->type;
 
     if ($message_type == "text") {
         $message_text = $event->message->text;
 
-        if (strpos($message_text, "1st\n") === false) {
-            $dirname = "麻雀同好会2nd";
-        } else {
+        if (strpos($message_text, "1st\n") === true) {
             $dirname = "麻雀同好会1st";
             $message_text = str_replace("1st\n", "", $message_text);
+        } else {
+            $dirname = "麻雀同好会2nd";
         }
 
         // 使い方
@@ -439,7 +468,7 @@ send:
             curl_close($ch);
         }
 
-        // Push設定
+        // push設定
         $ch = curl_init("https://api.line.me/v2/bot/message/push");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
