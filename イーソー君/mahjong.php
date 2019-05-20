@@ -130,7 +130,7 @@ if ($event_type == "follow" || $event_type == "join") {
     if ($message_type == "text") {
         $message_text = $event->message->text;
 
-        if (strpos($message_text, "1st\n") === true) {
+        if (strpos($message_text, "1st\n") !== false) {
             $dirname = "麻雀同好会1st";
             $message_text = str_replace("1st\n", "", $message_text);
         } else {
