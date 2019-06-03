@@ -102,12 +102,12 @@ if ($event_type == "follow" || $event_type == "join") {
     $post_data = [
         "replyToken" => $replytoken,
         "messages" => [
-        	[
-	            "type" => "text",
-	            "text" => "イーソー君だよ！\n" .
-	                      "自分の名前を送信すると成績が見られるよ！\n" .
-	                      "すべての機能を見るには「使い方」と送信してね！"
-	    	]
+            [
+                "type" => "text",
+                "text" => "イーソー君だよ！\n" .
+                          "自分の名前を送信すると成績が見られるよ！\n" .
+                          "すべての機能を見るには「使い方」と送信してね！"
+            ]
         ]
     ];
 
@@ -174,14 +174,14 @@ if ($event_type == "follow" || $event_type == "join") {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("ルール") . ".txt?" . date("YmdHis");
             $send_text = file_get_contents($fname);
 
-			if ($send_text) {
-	            $messages = [
-	                [
-	                    "type" => "text",
-	                    "text" => $send_text
-	                ]
-	            ];
-	        }
+            if ($send_text) {
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
+            }
 
             goto send;
         }
@@ -191,14 +191,14 @@ if ($event_type == "follow" || $event_type == "join") {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("大会") . "/" . $code[1] . "/" . urlencode("概要") . ".txt?" . date("YmdHis");
             $send_text = file_get_contents($fname);
 
-			if ($send_text) {
-	            $messages = [
-	                [
-	                    "type" => "text",
-	                    "text" => $send_text
-	                ]
-	            ];
-	        }
+            if ($send_text) {
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
+            }
 
             goto send;
         }
