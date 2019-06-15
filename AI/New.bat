@@ -6,4 +6,3 @@ if not exist %file_name% (
 )
 
 start %file_name%
-start “_”.xlsm
