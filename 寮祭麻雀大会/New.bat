@@ -1,5 +1,5 @@
 @echo off
-set file_name=‘Î‹Ç\%date:/=-%@1.xlsm
+set file_name=‘Î‹Ç\%date:/=-%.xlsm
 
 if not exist %file_name% (
     copy Template.xlsm %file_name% /-Y
