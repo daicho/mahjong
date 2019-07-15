@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     struct tm *local;
     char commit[256];
 
-	// 9‚Ü‚Å‚Íğ“ú‚Ì“ú•t
+	// 9æ™‚ã¾ã§ã¯æ˜¨æ—¥ã®æ—¥ä»˜
     timer = time(NULL) - 9 * 60 * 60;
     local = localtime(&timer);
 
