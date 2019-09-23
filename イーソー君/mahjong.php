@@ -133,8 +133,17 @@ if ($event_type == "follow" || $event_type == "join") {
         if (strpos($message_text, "1st\n") !== false) {
             $dirname = "麻雀同好会1st";
             $message_text = str_replace("1st\n", "", $message_text);
-        } else {
+
+        } else if (strpos($message_text, "2nd\n") !== false) {
             $dirname = "麻雀同好会2nd";
+            $message_text = str_replace("2nd\n", "", $message_text);
+
+        } else if (strpos($message_text, "3rd\n") !== false) {
+            $dirname = "麻雀同好会3rd";
+            $message_text = str_replace("3rd\n", "", $message_text);
+
+        } else {
+        	$dirname = "麻雀同好会3rd";
         }
 
         // 使い方
