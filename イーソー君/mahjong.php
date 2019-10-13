@@ -129,8 +129,14 @@ if ($event_type == "follow" || $event_type == "join") {
 
     if ($message_type == "text") {
         $message_text = $event->message->text;
+        $all_flag = false;
 
-        if (strpos($message_text, "1st\n") !== false) {
+        if (stripos ($message_text, "all\n") !== false) {
+            $dirname = "麻雀同好会All";
+            $message_text = str_ireplace("all\n", "", $message_text);
+            $all_flag = true;
+
+        } else if (strpos($message_text, "1st\n") !== false) {
             $dirname = "麻雀同好会1st";
             $message_text = str_replace("1st\n", "", $message_text);
 
@@ -179,7 +185,7 @@ if ($event_type == "follow" || $event_type == "join") {
         }
 
         // ルール
-        if ($message_text == "ルール") {
+        if ($message_text == "ルール" && !$all_flag) {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("ルール") . ".txt?" . date("YmdHis");
             $send_text = file_get_contents($fname);
 
@@ -196,7 +202,7 @@ if ($event_type == "follow" || $event_type == "join") {
         }
 
         // 大会
-        if (preg_match("/大会 ?(.+)/", $message_text, $code)) {
+        if (preg_match("/大会 ?(.+)/", $message_text, $code) && !$all_flag) {
             $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("大会") . "/" . $code[1] . "/" . urlencode("概要") . ".txt?" . date("YmdHis");
             $send_text = file_get_contents($fname);
 
@@ -439,21 +445,23 @@ if ($event_type == "follow" || $event_type == "join") {
         }
 
         // グラフ
-        $gfile = $record . str_replace("+", "%20", urlencode($message_text)) . ".png?" . date("YmdHis");
+        if (!$all_flag) {
+	        $gfile = $record . str_replace("+", "%20", urlencode($message_text)) . ".png?" . date("YmdHis");
 
-        // グラフ名が存在したら
-        if (file_get_contents($gfile)) {
+	        // グラフ名が存在したら
+	        if (file_get_contents($gfile)) {
 
-            $messages = [
-                [
-                    "type" => "image",
-                    "originalContentUrl" => $gfile,
-                    "previewImageUrl" => $gfile
-                ]
-            ];
+	            $messages = [
+	                [
+	                    "type" => "image",
+	                    "originalContentUrl" => $gfile,
+	                    "previewImageUrl" => $gfile
+	                ]
+	            ];
 
-            goto send;
-        }
+	            goto send;
+	        }
+	    }
 
 send:
         if (!is_null($messages)) {
@@ -488,7 +496,7 @@ send:
         ));
 
         // 推移
-        if (strpos($message_text, "推移")) {
+        if (strpos($message_text, "推移") && !$all_flag) {
             $name = str_replace(" 推移", "", $message_text);
 
             foreach ($rank_str as $item) {
