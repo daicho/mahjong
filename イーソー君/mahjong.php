@@ -314,6 +314,7 @@ if ($event_type == "follow" || $event_type == "join") {
         $fname = $record . urlencode($name) . ".csv?" . date("YmdHis");
         $graph_score = $record . urlencode($message_text) . "-Score.png?" . date("YmdHis");
         $graph_kyoku = $record . urlencode($message_text) . "-Kyoku.png?" . date("YmdHis");
+        $graph_fan = $record . urlencode($message_text) . "-Fan.png?" . date("YmdHis");
         $myfname = "record/" . $message_text . ".csv";
 
         // 名前が存在したら
@@ -439,6 +440,12 @@ if ($event_type == "follow" || $event_type == "join") {
                         "type" => "image",
                         "originalContentUrl" => $graph_kyoku,
                         "previewImageUrl" => $graph_kyoku
+                    ];
+
+                    $messages[] = [
+                        "type" => "image",
+                        "originalContentUrl" => $graph_fan,
+                        "previewImageUrl" => $graph_fan
                     ];
                 }
             }
