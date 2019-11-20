@@ -18,7 +18,7 @@ $rank_str = [
     "リーチ成功率",
     "副露成功率",
     "ツモ率",
-    "最大点数"
+    "最高点"
 ];
 
 $unsei = [
@@ -442,13 +442,13 @@ if ($event_type == "follow" || $event_type == "join") {
                         "originalContentUrl" => $graph_kyoku,
                         "previewImageUrl" => $graph_kyoku
                     ];
-
-                    $messages[] = [
-                        "type" => "image",
-                        "originalContentUrl" => $graph_fan,
-                        "previewImageUrl" => $graph_fan
-                    ];
                 }
+
+                $messages[] = [
+                    "type" => "image",
+                    "originalContentUrl" => $graph_fan,
+                    "previewImageUrl" => $graph_fan
+                ];
             }
 
             goto send;
