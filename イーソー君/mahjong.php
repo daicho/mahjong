@@ -13,7 +13,6 @@ $rank_str = [
     "平均アガリ点",
     "平均放銃点",
     "ふっとび率",
-    "ふっとばし率",
     "リーチ率",
     "副露率",
     "リーチ成功率",
@@ -408,19 +407,21 @@ if ($event_type == "follow" || $event_type == "join") {
                 $send_text .= "【" . $data[17][0] . "】" . $data[17][1] . " / " . $data[17][2] . "\n";
                 $send_text .= "【" . $data[18][0] . "】" . $data[18][1] . " / " . $data[18][2] . "\n";
                 $send_text .= "【" . $data[19][0] . "】" . $data[19][1] . " / " . $data[19][2] . "\n";
+                $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . " / " . $data[20][2] . "\n";
 
-                if ($message_text != "全体") {
-                    $send_text .= "【" . $data[20][0] . "】" . $data[20][1] . "\n";
-                    $send_text .= "【" . $data[21][0] . "】" . $data[21][1] . "\n";
-                }
-
+                $send_text .= "【" . $data[21][0] . "】" . $data[21][1] . "\n";
                 $send_text .= "【" . $data[22][0] . "】" . $data[22][1] . "\n";
                 $send_text .= "【" . $data[23][0] . "】" . $data[23][1] . "\n";
                 $send_text .= "【" . $data[24][0] . "】" . $data[24][1] . "\n";
-                $send_text .= "【" . $data[25][0] . "】" . $data[25][1] . "\n";
-                $send_text .= "【" . $data[26][0] . "】" . $data[26][1] . "\n";
+
+                if ($message_text != "全体") {
+                    $send_text .= "【" . $data[25][0] . "】" . $data[25][1] . "\n";
+                    $send_text .= "【" . $data[26][0] . "】" . $data[26][1] . "\n";
+                }
+
                 $send_text .= "【" . $data[27][0] . "】" . $data[27][1] . "\n";
-                $send_text .= "【" . $data[28][0] . "】" . $data[28][1] . " / " . $data[28][2];
+                $send_text .= "【" . $data[28][0] . "】" . $data[28][1] . "\n";
+                $send_text .= "【" . $data[29][0] . "】" . $data[29][1] . " / " . $data[29][2];
 
                 $messages = [
                     [
