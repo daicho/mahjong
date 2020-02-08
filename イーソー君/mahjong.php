@@ -414,7 +414,11 @@ if ($event_type == "follow" || $event_type == "join") {
                 $send_text .= "【" . $data[9][0]  . "】" . $data[9][1]  . "\n";
                 $send_text .= "【" . $data[10][0] . "】" . $data[10][1] . "\n";
                 $send_text .= "【" . $data[11][0] . "】" . $data[11][1] . "\n";
-                $send_text .= "【" . $data[12][0] . "】" . $data[12][1] . "\n";
+
+                if ($message_text != "全体") {
+                	$send_text .= "【" . $data[12][0] . "】" . $data[12][1] . "\n";
+                }
+
                 $send_text .= "【" . $data[13][0] . "】" . $data[13][1] . " / " . $data[13][2] . "\n";
                 $send_text .= "【" . $data[14][0] . "】" . $data[14][1] . " / " . $data[14][2] . "\n";
                 $send_text .= "【" . $data[15][0] . "】" . $data[15][1] . " / " . $data[15][2] . "\n";
