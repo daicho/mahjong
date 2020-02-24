@@ -149,7 +149,7 @@ if ($event_type == "follow" || $event_type == "join") {
             $message_text = str_replace("3rd\n", "", $message_text);
 
         } else {
-        	$dirname = "麻雀同好会3rd";
+            $dirname = "麻雀同好会3rd";
         }
 
         // 使い方
@@ -416,7 +416,7 @@ if ($event_type == "follow" || $event_type == "join") {
                 $send_text .= "【" . $data[11][0] . "】" . $data[11][1] . "\n";
 
                 if ($message_text != "全体") {
-                	$send_text .= "【" . $data[12][0] . "】" . $data[12][1] . "\n";
+                    $send_text .= "【" . $data[12][0] . "】" . $data[12][1] . "\n";
                 }
 
                 $send_text .= "【" . $data[13][0] . "】" . $data[13][1] . " / " . $data[13][2] . "\n";
@@ -477,24 +477,66 @@ if ($event_type == "follow" || $event_type == "join") {
             goto send;
         }
 
+        // ランキング
+        $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
+        $myfname = "record/ランキング.csv";
+
+        if (file_get_contents($fname)) {
+            if (is_null($data)) {
+                // CSVを読み込み
+                file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
+
+                $csv = new SplFileObject($myfname);
+                $csv->setFlags(SplFileObject::READ_CSV);
+
+                foreach ($csv as $row) {
+                    if (!is_null($row[0]))
+                        $data[] = $row;
+                }
+            }
+        }
+
+        for ($i = 0; $i < count($rank_str); $i++) {
+            // ランキングのいずれかに一致したら
+            if ($message_text == $rank_str[$i]) {
+                // ランキングを追加
+                if ($data[1][$i * 2 + 1] == "")
+                    $send_text = $data[0][$i * 2 + 1];
+                else
+                    $send_text = $data[0][$i * 2 + 1] . " [" . $data[1][$i * 2 + 1] . "]";
+
+                for ($j = 2; $j < count($data); $j++)
+                    $send_text .= "\n【" . $data[$j][$i * 2 + 1] . "】" . $data[$j][$i * 2 + 2];
+                
+                // 送信データ
+                $messages = [
+                    [
+                        "type" => "text",
+                        "text" => $send_text
+                    ]
+                ];
+
+                goto send;
+            }
+        }
+
         // グラフ
         if (!$all_flag) {
-	        $gfile = $record . str_replace("+", "%20", urlencode($message_text)) . ".png?" . date("YmdHis");
+            $gfile = $record . str_replace("+", "%20", urlencode($message_text)) . ".png?" . date("YmdHis");
 
-	        // グラフ名が存在したら
-	        if (file_get_contents($gfile)) {
+            // グラフ名が存在したら
+            if (file_get_contents($gfile)) {
+                $messages = [
+                    [
+                        "type" => "image",
+                        "originalContentUrl" => $gfile,
+                        "previewImageUrl" => $gfile
+                    ]
+                ];
 
-	            $messages = [
-	                [
-	                    "type" => "image",
-	                    "originalContentUrl" => $gfile,
-	                    "previewImageUrl" => $gfile
-	                ]
-	            ];
-
-	            goto send;
-	        }
-	    }
+                goto send;
+            }
+        }
 
 send:
         if (!is_null($messages)) {
@@ -557,27 +599,26 @@ send:
         }
 
         // ランキング
-        $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
-        $myfname = "record/ランキング.csv";
+        if ($message_text == "ランキング") {
+            $fname = "https://raw.githubusercontent.com/daicho/mahjong/master/" . urlencode($dirname) . "/" . urlencode("成績") . "/" . urlencode("ランキング") . ".csv?" . date("YmdHis");
+            $myfname = "record/ランキング.csv";
 
-        if (file_get_contents($fname)) {
-            if (is_null($data)) {
-                // CSVを読み込み
-                file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
+            if (file_get_contents($fname)) {
+                if (is_null($data)) {
+                    // CSVを読み込み
+                    file_put_contents($myfname, mb_convert_encoding(file_get_contents($fname), 'UTF-8', 'SJIS'));
 
-                $csv = new SplFileObject($myfname);
-                $csv->setFlags(SplFileObject::READ_CSV);
+                    $csv = new SplFileObject($myfname);
+                    $csv->setFlags(SplFileObject::READ_CSV);
 
-                foreach ($csv as $row) {
-                    if (!is_null($row[0]))
-                        $data[] = $row;
+                    foreach ($csv as $row) {
+                        if (!is_null($row[0]))
+                            $data[] = $row;
+                    }
                 }
             }
-        }
 
-        for ($i = 0; $i < count($rank_str); $i++) {
-            // ランキングのいずれかに一致したら
-            if ($message_text == $rank_str[$i] || $message_text == "ランキング") {
+            for ($i = 0; $i < count($rank_str); $i++) {
                 // ランキングを送信
                 if ($data[1][$i * 2 + 1] == "")
                     $send_text = $data[0][$i * 2 + 1];
