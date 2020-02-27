@@ -1,0 +1,4 @@
+DirectoryIndex ranking.php
+RewriteEngine on
+RewriteBase /
+RewriteRule ^personal/(.*)$ person.php?name=$1

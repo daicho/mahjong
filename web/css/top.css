@@ -1,0 +1,245 @@
+body
+{
+    position: absolute;
+    font-family: a-otf-midashi-go-mb31-pr6n, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+
+    margin: 0;
+    width: 100%;
+    overflow: auto;
+
+    box-sizing: border-box;
+
+    background-color: #E3D3C6;
+}
+
+a
+{
+    text-decoration: none;
+    
+}
+
+img
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* iOSのスタイルを消去*/
+input[type="button"],
+input[type="submit"]
+{
+  border-radius: 0;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-appearance: none;
+  overflow:visible;
+  padding: 0;
+}
+
+input[type="password"]
+{
+    border-radius: 0;
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    
+    padding: 0;
+    font-size: 18px;
+    font-family: a-otf-midashi-go-mb31-pr6n, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+/*-------------------ヘッダーの装飾---------------*/
+.header_block .logo
+{
+    display: block;
+
+    width: auto;
+    height: 60px;
+
+    margin: 67px auto;
+}
+
+/*-------------------切り替えボタンの装飾---------------*/
+.switch
+{
+    width: 205px;
+    height: 60px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    position: relative;
+}  
+
+.switch div
+{
+    display: inline-block;
+    text-align: center;
+    color: #111926;
+}
+
+.switch div img
+{
+    
+    height: 35px;
+    width: auto;
+
+    margin: 0 auto;
+}
+
+.rank
+{
+    /* margin-right: 87px; */
+    float: left;
+    cursor : pointer;
+}
+
+.man
+{
+    float: right;
+    cursor : pointer;
+}
+
+.switch p
+{
+    font-size: 14px;
+    margin: 0;
+}
+
+.line
+{
+    width: 3px;
+    height: 100%;
+    margin: 0 auto;
+    background-color: #111926;
+    border-radius: 2px;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 20px;
+    position: absolute;
+}
+
+/*-------------------ランキングの装飾---------------*/
+.check_flag
+{
+    display: none;
+}
+
+.rank_type
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    height: 61px;
+    max-width: 500px;
+    border-bottom: solid 1px;
+    color: white;
+
+    margin: 0 auto;
+}
+
+.rank_type p
+{
+    font-size: 16px;
+    color:  #111926;
+
+    padding-left: 23px;
+    margin: 0;
+}
+
+.rank_type img
+{   
+    width: auto;
+    height: 13.5px;
+    padding-right: 16px;
+}
+
+/*-------------------個人名の装飾---------------*/
+.ranking
+{
+    display: none;
+}
+
+
+.check_flag:checked + .rank_type + .ranking
+{
+    display: block;
+}
+
+ .name_block
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    height: 61px;
+    max-width: 500px;
+    border-bottom: solid 1px;
+    color: white;
+
+    margin: 0 auto;
+}
+
+.indent
+{
+    width: 10px;
+    height: 100%;
+    background-color: #111926;
+}
+
+.name_block p
+{
+    color:  #111926;
+}
+
+.rank_num 
+{
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 23px;
+    margin-right: 11px;
+
+    width: 18px;
+    height: 27px;
+    border: solid 2px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.name
+{
+    flex-grow: 3;
+}
+
+.score
+{
+    font-size: 14px;
+    padding-right: 41px;
+    float: right;
+}
+
+.arrow
+{
+    width: auto;
+    height: 14.5px;
+
+    padding-right: 23px;
+    float: right;
+}
+
+
+
+
+
+
+
+

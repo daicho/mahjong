@@ -1,0 +1,161 @@
+body
+{
+    position: absolute;
+
+    margin: 0;
+    width: 100%;
+    overflow-x: auto;
+
+    box-sizing: border-box;
+
+    background-color: #E3D3C6;
+}
+
+a
+{   
+    text-decoration: none;   
+}
+
+img
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* iOSのスタイルを消去*/
+input[type="button"],
+input[type="submit"]
+{
+  border-radius: 0;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-appearance: none;
+  overflow:visible;
+  padding: 0;
+}
+
+input[type="password"]
+{
+    border-radius: 0;
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    
+    padding: 0;
+    font-size: 18px;
+    font-family: a-otf-midashi-go-mb31-pr6n, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+/*-------------------ヘッダーの装飾---------------*/
+.header_block .logo
+{
+    display: block;
+
+    width: auto;
+    height: 60px;
+
+    margin: 67px auto 140px auto;
+}
+
+/*-------------------ログインフォームの装飾---------------*/
+
+.border_test
+{
+    height: 20px;
+    margin: 0 auto;
+    width: 300px;
+    border-bottom: solid 3px #111926;
+}
+
+/* 入力フォーム全体 */
+.login_form
+{
+    display: block;
+    width: 320px;
+    margin: 0 auto;
+}
+
+/* 錠シンボル */
+.lock_img
+{
+    display: block;
+    width: 93px;
+    height: 93px;
+
+    margin: 0 auto 20px auto;
+}
+
+/* エラーメッセージ */
+.error_msg
+{
+    font-family: a-otf-midashi-go-mb31-pr6n, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    color: #c02525;
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 0;
+
+}
+
+
+#pass_form
+{
+    display: block;
+
+    font-size: 18px;
+    font-family: a-otf-midashi-go-mb31-pr6n, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    color: #111926;
+
+    width: 320px;
+    height: 35px;
+
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid 3px #111926;
+    background-color: #E3D3C6;
+    margin-bottom: 28px;
+
+    outline: 0;
+}
+
+#pass_form::placeholder
+{
+    color: #606060;
+}
+
+/* ログインボタン */
+#login_btn
+{
+    display: block;
+    
+    font-size: 18px;
+    font-family: a-otf-midashi-go-mb31-pr6n, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    color: #808080;
+
+    width: 100px;
+    height: 40px;
+    background-color: #4d4d4d;
+    border-radius: 100px;
+    border: none;
+    margin: 0 auto;
+    text-align: center;
+
+    outline: 0;
+
+    cursor: pointer;
+    pointer-events: none;
+}
+
+
+
+

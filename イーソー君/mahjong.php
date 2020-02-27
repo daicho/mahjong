@@ -3,6 +3,7 @@ define("ACCESS_TOKEN", "p92VGjm5eJxJdzbz/cwIu3ErYj0pTf50tFV/ESKg2mLCHi0fHPvuPSaQ
 define("USER_ID", "U370e9c2081a4b305e756946b5f6313a5");
 
 $rank_str = [
+    "対戦数",
     "通算スコア",
     "平均スコア",
     "バランス",
