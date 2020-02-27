@@ -1,20 +1,12 @@
 <?php
     require_once("FileReader.php");
 
-    session_start();
-
-    // ログイン判定
-    if (!isset($_SESSION["LOGIN"])) {
-        header("Location: /login.php");
-        exit();
-    }
-
     // GET
     $name = $_GET["name"];
 
     // ディレクトリパス定義
-    $root_dir = "https://github.com/daicho/mahjong-club/raw/master/";
-    $system_dir = urlencode("成績管理システム") . "/";
+    $root_dir = "https://github.com/daicho/mahjong/raw/master/";
+    $system_dir = urlencode("麻雀同好会3rd") . "/";
     $seiseki_dir = $system_dir . urlencode("成績") . "/";
     
     $fileReader = new FileReader($root_dir);
@@ -26,12 +18,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title><?= $name ?>の成績 - 成績管理システム | 競技麻雀同好会</title>
+    <title><?= $name ?>の成績 - 成績管理システム | 裏麻雀同好会</title>
     <link rel="stylesheet" href="/css/person.css">
     <script src="/Chart.js/Chart.min.js"></script>
 </head>
 <body>
-    <h1>競技麻雀同好会 成績管理システム</h1>
+    <h1>裏麻雀同好会 成績管理システム</h1>
     <h2><?= $name ?></h2>
     <div class="personal-container">
         <div class="personal-table">
