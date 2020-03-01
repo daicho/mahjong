@@ -149,6 +149,10 @@ if ($event_type == "follow" || $event_type == "join") {
             $dirname = "麻雀同好会3rd";
             $message_text = str_replace("3rd\n", "", $message_text);
 
+        } else if (strpos($message_text, "4th\n") !== false) {
+            $dirname = "麻雀同好会4th";
+            $message_text = str_replace("4th\n", "", $message_text);
+
         } else {
             $dirname = "麻雀同好会3rd";
         }

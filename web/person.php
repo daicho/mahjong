@@ -8,7 +8,7 @@
     $root_dir = "https://github.com/daicho/mahjong/raw/master/";
     $system_dir = urlencode("麻雀同好会3rd") . "/";
     $seiseki_dir = $system_dir . urlencode("成績") . "/";
-    
+
     $fileReader = new FileReader($root_dir);
     $data = $fileReader->loadCSV($seiseki_dir . urlencode($name) . ".csv");
 ?>
