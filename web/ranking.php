@@ -49,6 +49,7 @@
             <p>参加者</p>
         </div>
     </div>
+
     <!-- ランキング -->
     <?php for ($j = 1; $j < count($data[2]);$j += 2) { ?>
         <section id="rank_block">
@@ -82,7 +83,6 @@
                             <img class="arrow" src="/svg/arrow_trans.svg" alt="">
                         </a>
                     <?php } ?>
-
             </div>
         </section>
     <?php } ?>
