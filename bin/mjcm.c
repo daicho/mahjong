@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
 
     system("git add -A");
     system(commit);
+    system("git pull");
+    system("git push");
 
     return 0;
 }
