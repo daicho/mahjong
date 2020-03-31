@@ -91,6 +91,8 @@ $replytoken = $event->replyToken;
 
 if (is_null($event->source->groupId))
     $source_id = $event->source->userId;
+else if (is_null($event->source->roomId))
+    $source_id = $event->source->roomId;
 else
     $source_id = $event->source->groupId;
 
