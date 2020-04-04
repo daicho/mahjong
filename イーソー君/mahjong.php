@@ -188,7 +188,7 @@ if ($event_type == "follow" || $event_type == "join") {
             $message_text = str_replace($matches[1] . "\n", "", $message_text);
 
         } else {
-            $dirname = "麻雀同好会3rd";
+            $dirname = "麻雀同好会4th";
         }
 
         // 使い方
