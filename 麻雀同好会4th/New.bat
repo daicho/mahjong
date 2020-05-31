@@ -7,4 +7,5 @@ if not exist %file_name% (
 )
 
 start %file_name%
+timeout /t 1 /nobreak > nul
 start “_”.xlsm
