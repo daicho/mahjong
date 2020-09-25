@@ -183,12 +183,16 @@ if ($event_type == "follow" || $event_type == "join") {
             $dirname = "麻雀同好会4th";
             $message_text = str_replace("4th\n", "", $message_text);
 
+        } else if (strpos($message_text, "5th\n") !== false) {
+            $dirname = "麻雀同好会5th";
+            $message_text = str_replace("5th\n", "", $message_text);
+
         } else if (preg_match("/(四麻|よんま|ヨンマ|4ma|4麻|4ま|4マ)/", $message_text, $matches)) {
             $dirname = "四人麻雀";
             $message_text = str_replace($matches[1] . "\n", "", $message_text);
 
         } else {
-            $dirname = "麻雀同好会4th";
+            $dirname = "麻雀同好会5th";
         }
 
         // 使い方
