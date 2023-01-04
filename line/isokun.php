@@ -187,16 +187,20 @@ if ($event_type == "follow" || $event_type == "join") {
             $dirname = "麻雀同好会5th";
             $message_text = str_replace("5th\n", "", $message_text);
 
-        } else if (strpos($message_text, "専攻科\n") !== false) {
-            $dirname = "麻雀同好会専攻科";
-            $message_text = str_replace("専攻科\n", "", $message_text);
+        } else if (strpos($message_text, "6th\n") !== false) {
+            $dirname = "麻雀同好会6th";
+            $message_text = str_replace("6th\n", "", $message_text);
+
+        } else if (strpos($message_text, "7th\n") !== false) {
+            $dirname = "麻雀同好会7th";
+            $message_text = str_replace("7th\n", "", $message_text);
 
         } else if (preg_match("/(四麻|よんま|ヨンマ|4ma|4麻|4ま|4マ)/", $message_text, $matches)) {
             $dirname = "四人麻雀";
             $message_text = str_replace($matches[1] . "\n", "", $message_text);
 
         } else {
-            $dirname = "麻雀同好会専攻科";
+            $dirname = "麻雀同好会7th";
         }
 
         // 使い方
